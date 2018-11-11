@@ -1,1 +1,1 @@
-# str_qsort
+A very simple implementation of String.
