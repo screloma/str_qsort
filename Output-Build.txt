@@ -1,0 +1,6 @@
+﻿1>------ Build started: Project: course, Configuration: Debug Win32 ------
+1>course.cpp
+1>e:\dev\git\str_qsort\string_.h(58): warning C4018: '<': signed/unsigned mismatch
+1>course.vcxproj -> E:\dev\git\str_qsort\Debug\course.exe
+1>Done building project "course.vcxproj".
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
