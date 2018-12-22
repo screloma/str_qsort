@@ -1,20 +1,21 @@
+
 template <typename t>
 void print_array(t array, const size_t size) {
 	for (size_t i = 0; i < size; i++) {
-		cout << array[i] << " ";
+		std::cout << array[i] << " ";
 	}
-	cout << endl;
+	std::cout << std::endl;
 }
 
 template <typename t>
 void print_matrix(t** array, const size_t size) {
 	for (size_t i = 0; i < size; i++) {
 		for (size_t j = 0; j < size; j++) {
-			cout << array[i][j] << "\t";
+			std::cout << array[i][j] << "\t";
 		}
-		cout << endl;
+		std::cout << std::endl;
 	}
-	cout << endl;
+	std::cout << std::endl;
 }
 
 template <typename t>
