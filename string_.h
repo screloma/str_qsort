@@ -1,4 +1,4 @@
-
+#include <algorithm>
 class String {
 	private:
 		int32_t size_;
@@ -18,21 +18,24 @@ class String {
 			: data_(new char[strlen(str) + 1]),
 			size_(strlen(str))
 		{
-			strcpy_s(data_, strlen(str) + 1, str);
+			strcpy(data_, str);
 		}
 
 		String(char* str)
 			:size_(strlen(str)),
 			data_(new char[strlen(str) + 1])
 		{
-			strcpy_s(data_, strlen(str) + 1, str);
+			strcpy(data_, str);
 		}
+
+		inline char* begin()const { return data_; }
+		inline char* end()const { return data_+size_; }
 
 		String(const String& rhs)
 			:data_(new char[strlen(rhs.data_)+1]),
 			size_(rhs.size())
 		{
-			strcpy_s(data_, strlen(rhs.data_) + 1, rhs.data_);
+			strcpy(data_, rhs.data_);
 		}
 
 
@@ -55,6 +58,10 @@ class String {
 
 		String lowercase()const {
 			String result(data_);
+			#if (__cplusplus >= 201103L) || (defined(_MSVC_LANG) && (_MSVC_LANG >= 201703L) && (_MSC_VER >= 1913))
+			std::for_each(result.data_, result.data_ + result.size_, [](char &x) {x = x | 32;});
+			return result;
+			#endif
 			for (size_t i = 0; i < size_; i++) {
 				result.data_[i] = result.data_[i] | 32;
 			}
@@ -188,21 +195,25 @@ class String {
 			char* rhs_data = rhs.get();
 			size_t lhs_size = lhs.size();
 			size_t rhs_size = rhs.size();
+			String lhs_l = lhs.lowercase();
+			String rhs_l = rhs.lowercase();
 			int size = (lhs_size > rhs_size) ? rhs_size : lhs_size;
 			for (int32_t i = 0; i < size; i++) {
-				if (lhs_data[i] > rhs_data[i]) {
-					return true;
+				if (lhs_data[i] != rhs_data[i]) {
+					if (lhs_l.get()[i] == rhs_l.get()[i]) {
+						return lhs_data[i] > rhs_data[i] ? true : false;
+					}
+					else {
+						if (lhs_l.get()[i] > rhs_l.get()[i]) {
+							return true;
+						}
+						else {
+							return false;
+						}
+					}
 				}
-				else if (lhs_data[i] < rhs_data[i]) {
-					return false;
-				}
 			}
-			if (lhs_size == rhs_size) {
-				return false;
-			}
-			else {
-				return (lhs_size > rhs_size) ? true : false;
-			}
+			return (lhs_size > rhs_size) ? true : false;
 		}
 
 		friend bool operator>(String&& lhs, String&& rhs) {
